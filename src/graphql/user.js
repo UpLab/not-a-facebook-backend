@@ -64,6 +64,9 @@ export const typeDefs = gql`
 `;
 
 export const resolvers = {
+  Post: {
+    creator: ({ createdBy }) => AuthService.findUserById(createdBy),
+  },
   Query: {
     me: (root, args, context) => context.user,
   },
@@ -81,5 +84,24 @@ export const resolvers = {
         user,
       };
     },
+    login: async (root, args) => {
+      const {
+        input: { username, password },
+      } = args;
+      const {
+        accessToken: { token },
+        user,
+      } = await AuthService.login(username, password);
+      return {
+        token,
+        user,
+      };
+    },
+    logout: async (root, args, ctx) => {
+      await AuthService.logout(ctx.token);
+      return null;
+    },
+    //     changePassword
+    // forgotPassword
   },
 };

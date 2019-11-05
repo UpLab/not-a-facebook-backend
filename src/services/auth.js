@@ -70,6 +70,10 @@ class Users {
     user.accessTokens = accessTokens;
     return accessToken;
   }
+
+  findUserById(userId) {
+    return UserModel.findById(userId);
+  }
 }
 
 export default new Users();

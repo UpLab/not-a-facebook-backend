@@ -17,6 +17,7 @@ const server = new ApolloServer({
   context: async ({ req }) => {
     const token = getTokenFromReq(req);
     return {
+      token,
       user: await UserModel.findByToken(token),
     };
   },

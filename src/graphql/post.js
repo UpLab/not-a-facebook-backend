@@ -13,7 +13,7 @@ export const typeDefs = gql`
   }
 
   type Post {
-    id: ID!
+    _id: ID!
     body: String!
     createdAt: Int!
     comments: [Comment]!
@@ -21,7 +21,7 @@ export const typeDefs = gql`
   }
 
   type Comment {
-    id: ID!
+    _id: ID!
     body: String!
     createdAt: Int!
     creatorId: ID!

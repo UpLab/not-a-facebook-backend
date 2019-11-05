@@ -1,13 +1,25 @@
 import { ApolloServer } from 'apollo-server';
 import schema from './schema';
 import logger from '../utils/logger';
+import UserModel from '../models/user';
 
+const getTokenFromReq = req => {
+  const header = req.headers.authorization || '';
+  const token = header.replace('Bearer ', '').replace('Token ', '');
+  return token;
+};
 const server = new ApolloServer({
   introspection: true,
   playground: true,
   schema,
   mocks: true,
-  mockEntireSchema: true,
+  mockEntireSchema: false,
+  context: async ({ req }) => {
+    const token = getTokenFromReq(req);
+    return {
+      user: await UserModel.findByToken(token),
+    };
+  },
 });
 
 export default async () => {

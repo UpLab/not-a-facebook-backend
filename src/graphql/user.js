@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
-const { gql } = require('apollo-server');
+import { gql } from 'apollo-server';
+import AuthService from '../services/auth';
 
 export const typeDefs = gql`
   extend type Query {
@@ -50,7 +51,7 @@ export const typeDefs = gql`
   }
 
   type User {
-    id: ID!
+    _id: ID!
     username: String!
     profile: UserProfile!
   }
@@ -63,5 +64,22 @@ export const typeDefs = gql`
 `;
 
 export const resolvers = {
-  // TODO: implement
+  Query: {
+    me: (root, args, context) => context.user,
+  },
+  Mutation: {
+    createAccount: async (root, args) => {
+      const {
+        input: { username, password, profile },
+      } = args;
+      const {
+        accessToken: { token },
+        user,
+      } = await AuthService.createAccount(username, password, profile);
+      return {
+        token,
+        user,
+      };
+    },
+  },
 };

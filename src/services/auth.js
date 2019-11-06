@@ -77,6 +77,10 @@ class Users {
   findUserById(userId) {
     return UserModel.findById(userId);
   }
+
+  findUserByUsername(username) {
+    return UserModel.findByUsername(username);
+  }
 }
 
 export default new Users();

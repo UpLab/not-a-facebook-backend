@@ -5,6 +5,7 @@ import AuthService from '../services/auth';
 export const typeDefs = gql`
   extend type Query {
     me: User
+    user(username: String!): User
   }
 
   extend type Mutation {
@@ -69,6 +70,7 @@ export const resolvers = {
   },
   Query: {
     me: (root, args, context) => context.user,
+    user: (root, args) => AuthService.findUserByUsername(args.username),
   },
   Mutation: {
     createAccount: async (root, args) => {

@@ -28,20 +28,21 @@ class Users {
       throw new Error('Username already taken!');
     }
     const user = initUserDocument(username, password, profile);
-    const accessToken = this.addAccessTokenToUser(user);
+    const accessToken = await this.addAccessTokenToUser(user);
     const userDoc = await UserModel.create(user);
     return { accessToken, user: userDoc };
   }
 
-  login(username, password) {
+  async login(username, password) {
     const encrypted = encrypt(password);
-    const user = UserModel.findOne({ username, password: encrypted });
+    const user = await UserModel.findOne({ username, password: encrypted });
     if (!user) {
       throw new Error('Invalid username or password!');
     }
     UserModel.update({ _id: user._id }, { $set: { lastLoginDate: new Date() } });
-    const accessToken = this.addAccessTokenToUser(user);
-    return accessToken;
+    const accessToken = await this.addAccessTokenToUser(user);
+
+    return { accessToken, user };
   }
 
   logout(token) {
@@ -60,11 +61,13 @@ class Users {
     UserModel.update({ _id }, { $set: { ...modifier } });
   }
 
-  addAccessTokenToUser(user) {
+  async addAccessTokenToUser(user) {
     const accessToken = generateAccessToken();
+
     const accessTokens = [...user.accessTokens, accessToken];
+
     if (user._id) {
-      UserModel.update({ _id: user._id }, { $set: { accessTokens } });
+      await UserModel.updateOne({ _id: user._id }, { $addToSet: { accessTokens: accessToken } });
     }
     // eslint-disable-next-line no-param-reassign
     user.accessTokens = accessTokens;

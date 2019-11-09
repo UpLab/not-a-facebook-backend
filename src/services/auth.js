@@ -61,6 +61,19 @@ class Users {
     UserModel.update({ _id }, { $set: { ...modifier } });
   }
 
+  async changePassword(user, password, newPassword) {
+    const { _id, password: currentPassword } = user;
+    const exists = !!UserModel.findById(_id);
+    if (!exists) {
+      throw new Error('User not found!');
+    }
+    if (currentPassword !== encrypt(password)) {
+      throw new Error('Password not match. Please input correct password');
+    }
+    const result = await UserModel.updateOne({ _id }, { $set: { password: encrypt(newPassword) } });
+    return result;
+  }
+
   async addAccessTokenToUser(user) {
     const accessToken = generateAccessToken();
 

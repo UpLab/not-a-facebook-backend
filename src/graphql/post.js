@@ -51,7 +51,7 @@ export const resolvers = {
     },
     deletePost: (root, args, ctx) => {
       authCheck(ctx);
-      return PostsService.remove(args.postId);
+      return PostsService.remove(args.postId).then(result => result.ok);
     },
     updatePost: (root, args, ctx) => {
       authCheck(ctx);

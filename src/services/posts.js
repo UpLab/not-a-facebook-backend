@@ -12,9 +12,9 @@ class PostsService {
     return PostModel.find({}).sort({ createdAt: -1 });
   }
 
-  getPostsByUserId() {
+  getPostsByUserId(_id) {
     // TODO: validate
-    return PostModel.findPostByUserId({});
+    return PostModel.findPostByUserId({ _id });
   }
 
   remove(_id) {

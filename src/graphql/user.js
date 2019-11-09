@@ -103,6 +103,14 @@ export const resolvers = {
       await AuthService.logout(ctx.token);
       return null;
     },
+    changePassword: async (root, args, ctx) => {
+      const {
+        input: { password, newPassword },
+      } = args;
+      const { nModified } = await AuthService.changePassword(ctx.user, password, newPassword);
+      if (nModified > 0) return true;
+      return false;
+    },
     //     changePassword
     // forgotPassword
   },

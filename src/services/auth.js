@@ -52,13 +52,14 @@ class Users {
     UserModel.update({ _id: user._id }, { $set: { accessTokens: filteredAccessTokens } });
   }
 
-  updateAccount(formData) {
-    const { _id, ...modifier } = formData;
-    const exists = !!UserModel.findById(_id);
-    if (!exists) {
-      throw new Error('User not found!');
+  async updateAccount(_id, username, modifier) {
+    const exists = await UserModel.findByUsername(modifier.username);
+    if (!!exists && modifier.username !== username) {
+      throw new Error('User already token! Please input other username');
     }
-    UserModel.update({ _id }, { $set: { ...modifier } });
+    await UserModel.updateOne({ _id }, { $set: { ...modifier } });
+    const user = await UserModel.findById(_id);
+    return user;
   }
 
   async changePassword(user, password, newPassword) {

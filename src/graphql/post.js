@@ -37,7 +37,8 @@ export const resolvers = {
   Query: {
     posts: (root, args, ctx) => {
       authCheck(ctx);
-      return PostsService.get();
+      const { limit } = args;
+      return PostsService.get(limit);
     },
     myPosts: (root, args, ctx) => {
       authCheck(ctx);

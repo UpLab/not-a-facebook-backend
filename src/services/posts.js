@@ -13,9 +13,9 @@ class PostsService {
       .limit(limit || 0);
   }
 
-  getPostsByUserId(_id) {
+  getPostsByUserId(_id, limit) {
     // TODO: validate
-    return PostModel.findPostByUserId({ _id });
+    return PostModel.findPostByUserId({ _id }, limit);
   }
 
   remove(_id) {

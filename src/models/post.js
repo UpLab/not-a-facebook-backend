@@ -8,10 +8,15 @@ const PostSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-PostSchema.statics.findPostByUserId = function getPostByUserId(userId, limit) {
-  return this.find({ createdBy: userId })
+PostSchema.statics.findByUserId = function findPostByUserId(userId, options) {
+  return this.findByQuery({ createdBy: userId }, options);
+};
+
+PostSchema.statics.findByQuery = function findByQuery(query, options) {
+  return this.find(query)
     .sort({ createdAt: -1 })
-    .limit(limit || 0);
+    .skip(options.offset)
+    .limit(options.limit || 10);
 };
 
 const PostModel = mongoose.model('Post', PostSchema);

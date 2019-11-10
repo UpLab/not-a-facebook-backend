@@ -7,15 +7,12 @@ class PostsService {
     return PostModel.create({ createdBy, body });
   }
 
-  get(limit) {
-    return PostModel.find({})
-      .sort({ createdAt: -1 })
-      .limit(limit || 0);
+  find(query = {}, options) {
+    return PostModel.findByQuery(query, options);
   }
 
-  getPostsByUserId(_id, limit) {
-    // TODO: validate
-    return PostModel.findPostByUserId({ _id }, limit);
+  findByUserId(_id, options) {
+    return PostModel.findByUserId(_id, options);
   }
 
   remove(_id) {

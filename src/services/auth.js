@@ -55,7 +55,7 @@ class Users {
   async updateAccount(_id, username, modifier) {
     const exists = await UserModel.findByUsername(modifier.username);
     if (!!exists && modifier.username !== username) {
-      throw new Error('User already token! Please input other username');
+      throw new Error('Username is taken. Please use another username');
     }
     await UserModel.updateOne({ _id }, { $set: { ...modifier } });
     const user = await UserModel.findById(_id);

@@ -10,6 +10,7 @@ export const typeDefs = gql`
 
   extend type Mutation {
     createAccount(input: CreateAccountInput!): TokenAndUser!
+    updateAccount(input: UpdateAccountInput!): User!
     login(input: LoginInput!): TokenAndUser!
     logout: Boolean
     changePassword(input: ChangePasswordInput!): Boolean
@@ -20,6 +21,10 @@ export const typeDefs = gql`
     username: String!
     password: String!
     profile: UserProfileInput
+  }
+  input UpdateAccountInput {
+    username: String
+    profile: UserProfileInput!
   }
 
   input LoginInput {
@@ -85,6 +90,12 @@ export const resolvers = {
         token,
         user,
       };
+    },
+    updateAccount: async (root, args, ctx) => {
+      const modifier = { ...args.input };
+      const { _id, username } = ctx.user;
+      const user = await AuthService.updateAccount(_id, username, modifier);
+      return user;
     },
     login: async (root, args) => {
       const {

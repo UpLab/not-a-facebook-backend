@@ -29,5 +29,6 @@ export default async () => {
   // The `listen` method launches a web server.
   const instance = await server.listen();
   const { url } = instance;
+  logger.info(`config: ${JSON.stringify(config)}`);
   logger.info(`🚀 Apollo Server ready at ${url}`);
 };

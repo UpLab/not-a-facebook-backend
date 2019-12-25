@@ -16,7 +16,8 @@
     "release": "standard-version",
     "release:major": "npm run release -- --release-as major",
     "release:minor": "npm run release -- --release-as minor",
-    "release:patch": "npm run release -- --release-as patch"
+    "release:patch": "npm run release -- --release-as patch",
+    "production": "npm run build && node ./build/index.js"
   },
   "author": "",
   "license": "ISC",
@@ -50,6 +51,9 @@
     "nodemon": "1.19.4",
     "prettier": "1.18.2",
     "standard-version": "7.0.0"
+  },
+  "engines": {
+    "node": "10.x"
   },
   "config": {
     "commitizen": {

@@ -9,7 +9,7 @@
     "debug": "nodemon --inspect src/index.js",
     "test": "jest",
     "clean": "rm -rf build && mkdir build",
-    "build-server": "babel -d ./build ./src -s -r node_modules/dotenv/config",
+    "build-server": "babel -d ./build ./src -s",
     "build": "npm run clean && npm run build-server",
     "lint": "eslint ./src",
     "lint:fix": "eslint --fix ./src",

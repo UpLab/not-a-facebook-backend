@@ -2,6 +2,7 @@ import { ApolloServer } from 'apollo-server';
 import schema from './schema';
 import logger from '../utils/logger';
 import UserModel from '../models/user';
+import config from '../config';
 
 const getTokenFromReq = req => {
   const header = req.headers.authorization || '';
@@ -9,6 +10,7 @@ const getTokenFromReq = req => {
   return token;
 };
 const server = new ApolloServer({
+  port: config.port,
   introspection: true,
   playground: true,
   schema,

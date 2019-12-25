@@ -10,7 +10,6 @@ const getTokenFromReq = req => {
   return token;
 };
 const server = new ApolloServer({
-  port: config.port,
   introspection: true,
   playground: true,
   schema,
@@ -27,7 +26,7 @@ const server = new ApolloServer({
 
 export default async () => {
   // The `listen` method launches a web server.
-  const instance = await server.listen();
+  const instance = await server.listen({ port: config.port });
   const { url } = instance;
   logger.info(`config: ${JSON.stringify(config)}`);
   logger.info(`🚀 Apollo Server ready at ${url}`);
